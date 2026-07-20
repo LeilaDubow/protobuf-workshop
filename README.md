@@ -1,13 +1,13 @@
 The following is tested on Ubuntu 24.04 LTS.
 
 # Quickstart:
-Clone the repository and navigate to it
+Clone the repository and navigate to it:
 ``` 
     git clone https://github.com/LeilaDubow/protobuf-workshop
     cd protobuf-workshop
 ```
 ## Prerequisites: protobuf
-An easy way is to install via pip (Python package manager)
+An easy way is to install via pip (Python package manager).
 
 You will need pip installed:
 ```
@@ -41,7 +41,7 @@ Initialise the submodules:
     git submodule update --init --recursive
 ```
 In order to generate the protobuf code & headers, make sure the virtual environment is activated.
-Then, make the script executable (if not already) and run it
+Then, make the script executable (if not already) and run it:
 ```
 	chmod +x generate_protos.sh
 	./generate_protos.sh
@@ -73,9 +73,17 @@ or
 ```
 (this will typically be /dev/ttyACM0).
 
-On Windows, this can be done with PuTTY.
+> Note: if you are using WSL, a virtual machine, docker etc. to access Linux, you probably won't be able to access this file without extra configuration. A simple workaround for this example is to just read the outputs using your host machine, e.g. with PuTTY on Windows, and copy in the data that we want to use later.
+> However, there are typically ways to give Linux access to this device. For example:
+>* If you are using docker, you can add the --device=/dev/ttyACMx flag.
+>* If you are using a virtual machine, look up device passthrough.
 
-The output should show the encoded message written in hexadecimal!
+
+The output should show the encoded message written in hexadecimal.
+
+```
+9 bytes written: 0801 1500 00b0 4018 36
+```
 
 The output can be redirected into a file as follows:
 ```
@@ -83,18 +91,35 @@ The output can be redirected into a file as follows:
 ```
 
 # CLI encoding and decoding with proto-c
-Make sure xxd is installed
+Make sure xxd is installed:
 ```
     sudo apt install xxd
 ```
+and that you are in the protobuf-workshop directory. 
+e.g.
+```
+	cd ..
+```
+or 
+```
+	cd /path/to/protobuf-workshop
+```
+
 ## Decoding example
-We can verify whether the output is correct by decoding it again, like in the following example:
+We can verify whether the output is correct by decoding it again to recover the initial message:
 ```
 	echo "0801 1500 00b0 4018 36" > encoded_hexdump 
 	xxd -r -p encoded_hexdump > encoded_bin
 	protoc < encoded_bin --decode=Message lib/protos/message.proto
 
 ```
+should output 
+```
+	val1: 1
+	val2: 5.5
+	val3: 54
+```
+which was our original message.
 
 ## Encoding example
 We can also check how we expect our messages to be encoded:
@@ -104,5 +129,5 @@ We can also check how we expect our messages to be encoded:
 	protoc --encode=Message lib/protos/message.proto < cli_message > encoded.bin
 	xxd encoded.bin
 ```
-# 
+should output the original hexadecimal.
 
