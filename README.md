@@ -1,45 +1,109 @@
-# Prerequisites:
-## Installing protobuf
+The following is tested on Ubuntu 24.04 LTS.
 
+# Prerequisites:
+## Protobuf
 An easy way is to install via pip (Python package manager)
+
+You will need pip installed:
+```
+    sudo apt install pip
+    sudo apt install python2.12-venv
+```
 
 First create a virtual environment:
 ```
-	python3 -m venv .venv
+	python3 -m venv /path/to/venv
 ```
 To activate it:
 ```
-	source ./.venv/bin/activate
+	source /path/to/venv/bin/activate
 ```
 
-Then download the required packages
+Then download the required packages:
 ```
 	pip3 install protobuf grpcio-tools 
+    sudo apt install protobuf-compiler
 ```
-# Generating the protobuf code & headers
-Make sure the virtual environment is activated.
-Make the script executable
+
+## Build tools
+```
+    sudo apt install cmake gcc-arm-none-eabi
+```
+
+# How to run example
+Clone the repository and navigate to it
+``` 
+    git clone https://github.com/LeilaDubow/protobuf-workshop
+    cd protobuf-workshop
+```
+
+Initialise the submodules:
+```
+    git submodule update --init --recursive
+```
+In order to generate the protobuf code & headers, make sure the virtual environment is activated.
+Then, make the script executable (if not already) and run it
 ```
 	chmod +x generate_protos.sh
-``` 
-Then to run it:
-```
 	./generate_protos.sh
+```
+The protobuf code only needs to be rebuild when the protobuf definitions are changed.
+
+To build:
+```
+    mkdir build
+    cd build
+    cmake ..
+    make
+```
+
+Then, connect the RP2040 to your computer. 
+Hold the boot and reset buttons both for around one second, release the reset button, and approximately one second later release the boot button.
+This should mount the device (it should be visible in your file system).
+
+You can then drag the Protobuf.uf2 found in the build directory there.
+
+The device should no longer be mounted.
+
+```
+    sudo cat /dev/ttyACMx
+```
+or 
+``` 
+    sudo screen /dev/ttyACMx
+```
+(this will typically be /dev/ttyACM0).
+
+On Windows, this can be done with PuTTY.
+
+The output should show the encoded message written in hexadecimal!
+
+The output can be redirected into a file as follows:
+```
+    sudo cat /dev/ttyACMx > output.txt
 ```
 
 # CLI encoding and decoding with proto-c
+Make sure xxd is installed
+```
+    sudo apt install xxd
+```
+## Decoding example
+We can verify whether the output is correct by decoding it again, like in the following example:
+```
+	echo "0801 1500 00b0 4018 36" > encoded_hexdump 
+	xxd -r -p encoded_hexdump > encoded_bin
+	protoc < encoded_bin --decode=Message lib/protos/message.proto
+
+```
+
 ## Encoding example
+We can also check how we expect our messages to be encoded:
 
 ```
 	echo "val1 : 1, val2 : 5.5, val3 : 54" > cli_message
 	protoc --encode=Message lib/protos/message.proto < cli_message > encoded.bin
 	xxd encoded.bin
 ```
-## Decoding example
-```
-	echo "0801 1500 00b0 4018 36" > encoded_hexdump 
-	xxd -r -p encoded_hex_dump > encoded_bin
-	protoc < encoded_bin --decode=Message lib/protos/message.proto
-
-```
+# 
 
