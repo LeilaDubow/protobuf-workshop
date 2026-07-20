@@ -6,8 +6,7 @@ An easy way is to install via pip (Python package manager)
 
 You will need pip installed:
 ```
-    sudo apt install pip
-    sudo apt install python2.12-venv
+    sudo apt install python3-pip python3.12-venv
 ```
 
 First create a virtual environment:
