@@ -1,7 +1,12 @@
 The following is tested on Ubuntu 24.04 LTS.
 
-# Prerequisites:
-## Protobuf
+# Quickstart:
+Clone the repository and navigate to it
+``` 
+    git clone https://github.com/LeilaDubow/protobuf-workshop
+    cd protobuf-workshop
+```
+## Prerequisites: protobuf
 An easy way is to install via pip (Python package manager)
 
 You will need pip installed:
@@ -11,11 +16,11 @@ You will need pip installed:
 
 First create a virtual environment:
 ```
-	python3 -m venv /path/to/venv
+	python3 -m venv .venv
 ```
 To activate it:
 ```
-	source /path/to/venv/bin/activate
+	source .venv/bin/activate
 ```
 
 Then download the required packages:
@@ -24,17 +29,12 @@ Then download the required packages:
     sudo apt install protobuf-compiler
 ```
 
-## Build tools
+## Prerequisites: build tools
 ```
     sudo apt install cmake gcc-arm-none-eabi
 ```
 
-# How to run example
-Clone the repository and navigate to it
-``` 
-    git clone https://github.com/LeilaDubow/protobuf-workshop
-    cd protobuf-workshop
-```
+## How to run example
 
 Initialise the submodules:
 ```
