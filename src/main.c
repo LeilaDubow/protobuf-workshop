@@ -15,10 +15,11 @@ int main() {
 	uint8_t buf[BUF_LEN];
 	uint8_t bytes_written = 0;
 
+	msg.val1 = 1;
+	msg.val2 = 5.5;
+	msg.val3 = 54;
+
 	while (1) {
-		msg.val1 = 1;
-		msg.val2 = 5.5;
-		msg.val3 = 54;
 
 		pb_ostream_t stream = pb_ostream_from_buffer(buf, sizeof(buf));
 
