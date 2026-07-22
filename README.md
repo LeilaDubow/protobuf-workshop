@@ -65,6 +65,8 @@ You can then drag the Protobuf.uf2 found in the build directory there.
 
 The device should no longer be mounted.
 
+You should then be able to view the outputs from the microcontroller with
+
 ```
     sudo cat /dev/ttyACMx
 ```
@@ -80,7 +82,7 @@ or
 >* If you are using a virtual machine, look up device passthrough.
 
 
-The output should show the encoded message written in hexadecimal.
+The output should show the encoded message written in hexadecimal:
 
 ```
 9 bytes written: 0801 1500 00b0 4018 36
